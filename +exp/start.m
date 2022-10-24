@@ -1,5 +1,5 @@
 function [status, exception, recordings] = start(stim_type, phase, run, opts)
-%START_NBACK Starts stimuli presentation for n-back test
+%START Starts stimuli presentation for n-back test
 %   Detailed explanation goes here
 arguments
     stim_type {mustBeTextScalar, mustBeMember(stim_type, ["loc", "dig"])} = "loc"
@@ -79,7 +79,7 @@ try
     n_cues = 3;
     tex_cues = nan(1, n_cues);
     for i = 1:n_cues
-        cue_file = fullfile('instractor', sprintf('instrator_%dback.png', i - 1));
+        cue_file = fullfile('instractor', sprintf('instractor_%dback.png', i - 1));
         tex_cues(i) = image_to_tex(cue_file, window_ptr);
     end
     % preprare stimuli textures
