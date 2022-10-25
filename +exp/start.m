@@ -6,7 +6,7 @@ arguments
     phase {mustBeTextScalar, mustBeMember(phase, ["prac", "prac0", "prac1", "prac2", "test"])} = "prac"
     run {mustBeInteger, mustBePositive} = 1
     opts.id (1, 1) {mustBeInteger, mustBeNonnegative} = 0
-    opts.SaveData (1, 1) {mustBeNumericOrLogical} = true
+    opts.SaveData (1, 1) {mustBeNumericOrLogical} = phase == "test"
     opts.SkipSyncTests (1, 1) {mustBeNumericOrLogical} = true
 end
 
@@ -183,6 +183,12 @@ if opts.SaveData
         sprintf('nback_stim-%s_phase-%s_sub-%03d_run-%d_time-%s.csv', ...
         stim_type, phase, opts.id, run, ...
         datetime("now", "Format", "yyyyMMdd-HHmmss"))))
+end
+
+% display percent of correct as an alert
+if phase ~= "test"
+    pc = mean(recordings.acc(recordings.cond ~= "filler") == 1, "omitnan");
+    msgbox(sprintf("本次正确率为%.1f%%", pc * 100))
 end
 
 if ~isempty(exception)
