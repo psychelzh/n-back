@@ -47,14 +47,13 @@ end
 stims_pool = opts.StimsPool;
 
 % we cannot really set lure type for zero and one back
-n_filler = task_load;
-n_same = fix((num_trials - task_load) / 2);
+n_same = fix(num_trials / 2);
 if task_load == 2
-    n_lure = fix((num_trials - task_load) / 4);
+    n_lure = fix(num_trials / 4);
 else
     n_lure = 0;
 end
-n_diff = num_trials - n_filler - n_same - n_lure;
+n_diff = num_trials - n_same - n_lure;
 stim_conds = [ ...
     repelem("same", n_same), ...
     repelem("lure", n_lure), ...
@@ -87,8 +86,8 @@ end
 % --- allocate stimulus ---
 order_stim = [ ...
     randsample(stims_pool, task_load, false), ...
-    nan(1, num_trials - task_load)];
-for i = (task_load + 1):num_trials
+    nan(1, num_trials)];
+for i = (task_load + 1):(task_load + num_trials)
     if cond_order(i) == "same"
         if task_load == 0
             order_stim(i) = opts.Target0;
@@ -112,7 +111,7 @@ for i = (task_load + 1):num_trials
 end
 
 trials = table( ...
-    (1:num_trials)', order_stim', ...
+    (1:(task_load + num_trials))', order_stim', ...
     cond_order', cresp_order', ...
     VariableNames=["trial_id", "stim", "cond", "cresp"]);
 end
